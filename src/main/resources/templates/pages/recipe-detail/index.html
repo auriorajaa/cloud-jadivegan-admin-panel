@@ -7,27 +7,24 @@
     <title>JadiVegan - Recipe Detail</title>
     <meta name="description"
         content="Let's join our vegan community now at jadivegan! Find and try our vegan recipe from our skilled chef" />
-    <link rel="stylesheet" href="../../output.css">
-    <link rel="stylesheet" href="../../input.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="/src/main/resources/templates/database-config.js"></script>
+    <link rel="stylesheet" href="/src/main/resources/templates/output.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-    <link rel="icon" href="../../assets/images/logo.png" />
+    <link rel="icon" href="/src/main/resources/templates/assets/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <!-- NAVBAR SECTION STARTED -->
-    <nav class="bg-white border-gray-200">
+    <nav class="bg-white border-gray-200" style="font-family: 'Poppins', sans-serif;">
         <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="../../assets/images/logo.png" class="h-8" alt="Flowbite Logo" />
+                <img src="/src/main/resources/templates/assets/images/logo.png" class="h-8" alt="Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap">JadiVegan</span>
             </a>
             <button data-collapse-toggle="navbar-default" type="button"
@@ -44,16 +41,17 @@
                 <ul
                     class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
                     <li>
-                        <a href="/dist/index.html" class="navbar-list block py-2 px-3 text-gray-900  rounded md:p-0"
+                        <a href="/src/main/resources/templates/pages/explore-page/index.html"
+                            class="navbar-list block py-2 px-3 text-gray-900  rounded md:p-0"
                             aria-current="page">Home</a>
                     </li>
                     <li>
-                        <a href="/dist/pages/create-recipe-form/index.html"
+                        <a href="/src/main/resources/templates/pages/create-recipe-form/index.html"
                             class="navbar-list block py-2 px-3 text-gray-900 rounded md:p-0">Create
                             Recipes</a>
                     </li>
                     <li>
-                        <a href="/dist/pages/create-recipe-form/index.html"
+                        <a href="" id="edit-recipe"
                             class="navbar-list block py-2 px-3 text-gray-900 rounded md:p-0">Edit This
                             Recipes</a>
                     </li>
@@ -65,92 +63,52 @@
 
     <hr>
 
-    <div class="max-w-screen-xl mx-auto w-full p-4 py-6 lg:py-8">
+    <!-- MAIN SECTION STARTED -->
+    <div class="max-w-screen-xl mx-auto w-full p-4 py-6 lg:py-8" style="font-family: 'Poppins', sans-serif;">
         <main class="">
-            <article class="w-full max-w-2xl format format-sm sm:format-base lg:format-lg">
+            <article class="w-full max-w-2xl leading-loose">
                 <h1 id="recipe-title" class="mb-4 text-5xl font-extrabold text-black lg:mb-6"
-                    style="font-family: 'Dancing Script', cursive;">Title
+                    style="font-family: 'Dancing Script', cursive;">
                 </h1>
                 <figure>
-                    <img src="https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2020/02/sstk-vegan-food.jpg"
-                        id="dish-image" alt="" class="object-cover rounded-lg">
+                    <img id="dish-image" src="" alt="" class="object-cover rounded-lg">
                 </figure>
                 <br>
                 <span style="font-family: 'Poppins', sans-serif;"
-                    class="bg-green-700 rounded-lg text-white text-sm font-medium me-2 px-4 py-2"
-                    id="recipe-category">Breakfast
+                    class="bg-green-700 rounded-lg text-white text-sm font-medium me-2 px-4 py-2" id="recipe-category">
                 </span>
                 <span style="font-family: 'Poppins', sans-serif;"
                     class="border border-gray-300 rounded-lg text-[#207b34] text-sm font-medium me-2 px-4 py-2"
-                    id="recipe-servings">4 Servings
+                    id="recipe-servings">
                 </span>
                 <br>
                 <br>
                 <div id="recipe-content" class="text-black gap-3 my-4" style="font-family: 'Poppins', sans-serif;">
-                    <div class="ingredients">
+                    <div class="recipe-ingredients">
                         <h2 class="font-semibold my-3 text-2xl">Ingredients:</h2>
-                        <ul class="space-y-2 font-light">
-                            <li>2 tablespoons olive oil</li>
-                            <li>1 onion, finely chopped</li>
-                            <li>2 cloves garlic, minced</li>
-                            <li>2 carrots, diced</li>
-                            <li>2 celery stalks, diced</li>
-                            <li>1 red bell pepper, diced</li>
-                            <li>1 can (28 ounces) diced tomatoes</li>
-                            <li>4 cups vegetable broth</li>
-                            <li>1 teaspoon dried basil</li>
-                            <li>1 teaspoon dried oregano</li>
-                            <li>1/2 teaspoon dried thyme</li>
-                            <li>Salt and pepper to taste</li>
-                            <li>Fresh basil leaves, for garnish (optional)</li>
-                            <li>Croutons, for serving (optional)</li>
+                        <ul id="recipe-ingredients" class="space-y-2 font-light">
                         </ul>
                     </div>
 
                     <br>
 
-                    <div class="instructions">
+                    <div class="recipe-instructions">
                         <h2 class="font-semibold my-3 text-2xl">Instructions:</h2>
-                        <ol class="space-y-2 font-light">
-                            <li>Heat olive oil in a large pot over medium heat. Add the chopped onion and cook until
-                                translucent, about 5 minutes.</li>
-                            <li>Add minced garlic and cook for another minute until fragrant.</li>
-                            <li>Stir in diced carrots, celery, and red bell pepper. Cook for 5-7 minutes until the
-                                vegetables begin to soften.</li>
-                            <li>Pour in the diced tomatoes (with their juices) and vegetable broth. Add dried basil,
-                                oregano, thyme, salt, and pepper. Stir well to combine.</li>
-                            <li>Bring the soup to a simmer, then reduce the heat to low. Cover and let it simmer for
-                                20-25
-                                minutes, stirring occasionally, until the vegetables are tender.</li>
-                            <li>Once the vegetables are cooked, remove the soup from heat. Use an immersion blender to
-                                puree
-                                the soup until smooth. Alternatively, you can carefully transfer the soup in batches to
-                                a
-                                blender and blend until smooth.</li>
-                            <li>Taste the soup and adjust seasoning if needed.</li>
-                            <li>Ladle the vegetarian tomato soup into bowls. Garnish with fresh basil leaves and serve
-                                with
-                                croutons if desired.</li>
-                            <li>Enjoy your comforting and flavorful Vegetarian Tomato Soup!</li>
-                        </ol>
+                        <ol id="recipe-instructions" class="space-y-2 font-light"></ol>
                     </div>
 
                     <br>
 
                     <div class="tips font[secondFont]">
                         <h2 class="font-semibold my-3 text-2xl">Tips:</h2>
-                        <p class="font-light">For added creaminess, you can stir in a splash of coconut milk
-                            or cashew cream before
-                            serving. Customize the soup by adding other vegetables like spinach, zucchini, or
-                            mushrooms. Serve the soup with a side of crusty bread for a complete meal.
+                        <p id="recipe-tips" class="font-light">
                         </p>
                     </div>
                 </div>
             </article>
         </main>
     </div>
-
-    <!-- HOW TO COOK SECTION ENDED -->
+    <!-- MAIN SECTION ENDED -->
 
     <br>
     <br>
@@ -158,99 +116,16 @@
     <!-- FOOTER SECTION STARTED -->
     <footer class="bg-white">
         <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-            <div class="md:flex md:justify-between">
-                <div class="mb-6 md:mb-0">
-                    <a href="#" class="flex items-center">
-                        <img src="/src/assets/images/logo.png" class="h-8 me-3" alt="JadiVegan Logo" />
-                        <span
-                            class="self-center text-2xl font-[secondFont] font-semibold whitespace-nowrap">JadiVegan</span>
-                    </a>
-                </div>
-                <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Resources</h2>
-                        <ul class="text-gray-500 font-medium">
-                            <li class="mb-4">
-                                <a href="#" class="hover:underline">JadiVegan</a>
-                            </li>
-                            <li>
-                                <a href="#" class="hover:underline">World Vegan Club</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Follow us</h2>
-                        <ul class="text-gray-500 font-medium">
-                            <li class="mb-4">
-                                <a href="#" class="hover:underline ">Instagram</a>
-                            </li>
-                            <li>
-                                <a href="#" class="hover:underline">YouTube</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase">Legal</h2>
-                        <ul class="text-gray-5000 font-medium">
-                            <li class="mb-4">
-                                <a href="#" class="hover:underline">Privacy Policy</a>
-                            </li>
-                            <li>
-                                <a href="#" class="hover:underline">Terms &amp; Conditions</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <hr class="my-6 border-gray-200 sm:mx-auto lg:my-8" />
             <div class="sm:flex sm:items-center sm:justify-between">
                 <span class="text-sm text-gray-500 sm:text-center">© 2024 <a href="#"
                         class="hover:underline">JadiVegan™</a>. All Rights Reserved.
                 </span>
-                <div class="flex mt-4 sm:justify-center sm:mt-0">
-                    <a href="#" class="text-gray-500 hover:text-gray-900">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 8 19">
-                            <path fill-rule="evenodd"
-                                d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="sr-only">Facebook page</span>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900 ms-5">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 21 16">
-                            <path
-                                d="M16.942 1.556a16.3 16.3 0 0 0-4.126-1.3 12.04 12.04 0 0 0-.529 1.1 15.175 15.175 0 0 0-4.573 0 11.585 11.585 0 0 0-.535-1.1 16.274 16.274 0 0 0-4.129 1.3A17.392 17.392 0 0 0 .182 13.218a15.785 15.785 0 0 0 4.963 2.521c.41-.564.773-1.16 1.084-1.785a10.63 10.63 0 0 1-1.706-.83c.143-.106.283-.217.418-.33a11.664 11.664 0 0 0 10.118 0c.137.113.277.224.418.33-.544.328-1.116.606-1.71.832a12.52 12.52 0 0 0 1.084 1.785 16.46 16.46 0 0 0 5.064-2.595 17.286 17.286 0 0 0-2.973-11.59ZM6.678 10.813a1.941 1.941 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.919 1.919 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Zm6.644 0a1.94 1.94 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.918 1.918 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Z" />
-                        </svg>
-                        <span class="sr-only">Discord community</span>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900 ms-5">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 17">
-                            <path fill-rule="evenodd"
-                                d="M20 1.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.344 8.344 0 0 1-2.605.98A4.13 4.13 0 0 0 13.85 0a4.068 4.068 0 0 0-4.1 4.038 4 4 0 0 0 .105.919A11.705 11.705 0 0 1 1.4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 4.1 9.635a4.19 4.19 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 0 14.184 11.732 11.732 0 0 0 6.291 16 11.502 11.502 0 0 0 17.964 4.5c0-.177 0-.35-.012-.523A8.143 8.143 0 0 0 20 1.892Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="sr-only">Twitter page</span>
-                    </a>
-                </div>
             </div>
         </div>
     </footer>
     <!-- FOOTER SECTION ENDED -->
 
-    <!-- IONICONS JAVASCRIPT STARTED -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <!-- IONICONS JAVASCRIPT ENDED -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="../../swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
-    <script src="../../../node_modules/flowbite/dist/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 

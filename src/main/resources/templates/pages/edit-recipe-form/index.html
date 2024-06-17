@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>JadiVegan - Edit Recipe</title>
+   <meta name="description"
+      content="Let's join our vegan community now at jadivegan! Find and try our vegan recipe from our skilled chef" />
+   <script type="module" src="/src/main/resources/templates/database-config.js"></script>
+   <link rel="stylesheet" href="/src/main/resources/templates/output.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+   <link rel="icon" href="/src/main/resources/templates/assets/images/logo.png" />
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+   <!-- NAVBAR SECTION STARTED -->
+   <nav class="bg-white border-gray-200" style="font-family: 'Poppins', sans-serif;">
+      <div class=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+         <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="/src/main/resources/templates/assets/images/logo.png" class="h-8" alt="Logo" />
+            <span class="self-center text-2xl font-semibold whitespace-nowrap">JadiVegan</span>
+         </a>
+         <button data-collapse-toggle="navbar-default" type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            aria-controls="navbar-default" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15" />
+            </svg>
+         </button>
+         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul
+               class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+               <li>
+                  <a href="/src/main/resources/templates/pages/explore-page/index.html"
+                     class="navbar-list block py-2 px-3 text-gray-900 rounded md:p-0" aria-current="page">Home</a>
+               </li>
+               <li>
+                  <a href="/src/main/resources/templates/pages/create-recipe-form/index.html"
+                     class="navbar-list block py-2 px-3 text-gray-900 rounded md:p-0">Create
+                     Recipes</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+   <!-- NAVBAR SECTION ENDED -->
+
+   <!-- EDIT RECIPE SECTION STARTED -->
+   <div class="flex flex-col max-w-screen-xl p-3 mx-auto">
+      <div class="max-w-full p-2 flex">
+         <div class="max-w-2xl py-3 ">
+            <h1 class="my-2 font-extrabold text-5xl" style="font-family: 'Dancing Script', cursive;">Edit Your
+               Recipe
+            </h1>
+            <p class="my-4 text-gray-500" style="font-family: 'Poppins', sans-serif;">You can edit your current recipe
+               in this particular page. Make sure you changed it correctly!</p>
+            <p class="mt-4 text-gray-500" style="font-family: 'Poppins', sans-serif;">By submitting any content for
+               consideration, you agree to the <span
+                  class="material-release underline cursor-pointer !text-[#35B14F]">JadiVegan Materials
+                  Release</span>
+            </p>
+            <img id="display-dish-image" src="" alt="" class="rounded-md mt-7">
+            <div class="text-sm flex flex-row justify-between italic" style="font-family: 'Poppins', sans-serif;">
+               <figcaption>Current dish image</figcaption>
+               <a id="view-recipe" href="">
+                  <h1 class="flex items-center gap-1 cursor-pointer underline">View Recipe <ion-icon
+                        name="open-outline"></ion-icon></h1>
+               </a>
+            </div>
+
+            <div class="max-w-full mt-10 flex flex-col" style="font-family: 'Poppins', sans-serif;">
+               <h1 class="text-4xl font-semibold mb-3">Current Recipe Details</h1>
+               <div class="sm:col-span-2 my-4">
+                  <input type="hidden" id="recipe-uid"
+                     class="form-create-recipe bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                     placeholder="UID">
+
+                  <label class="block mb-2 text-lg font-medium text-gray-900">Recipe
+                     Title <span class="text-red-600">*</span></label>
+                  <input type="text" id="recipe-title-input"
+                     class="form-create-recipe bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                     placeholder="Type recipe title" required="">
+               </div>
+
+               <div class="flex flex-col sm:flex-row max-w-screen-sm gap-2 my-4">
+                  <div class="sm:mr-4">
+                     <label class="block text-lg mb-2 font-semibold text-gray-900">Number of
+                        Servings
+                        <span class="text-red-600">*</span></label>
+                     <input type="number" id="recipe-servings-input"
+                        class="form-create-recipe bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                        placeholder="Number of Servings" required="" min="1">
+                  </div>
+                  <div>
+                     <label class="block text-lg mb-2 font-semibold text-gray-900">Category
+                        <span class="text-red-600">*</span></label>
+                     <select id="recipe-category-input" required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Brunch">Brunch</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snacks">Snacks</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="sm:col-span-2 my-4">
+                  <label class="block mb-2 text-lg font-semibold text-gray-900">Ingredients
+                     <span class="text-red-600">*</span></label>
+                  <textarea id="recipe-ingredients-input" rows="4" required
+                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                     placeholder="2 tablespoons olive oil.
+2 carrots, diced."></textarea>
+                  <p class="text-xs font-light italic">Please put each ingredient and its measurement on its
+                     own
+                     line.
+                  </p>
+               </div>
+
+               <div class="sm:col-span-2 my-4">
+                  <label class="block mb-2 text-lg font-semibold text-gray-900">Instructions
+                     <span class="text-red-600">*</span></label>
+                  <textarea id="recipe-instructions-input" rows="4" required=""
+                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                     placeholder="Heat olive oil in a large pot.
+Add minced garlic and cook for another minute until fragrant."></textarea>
+                  <p class="text-xs font-light italic">Please put each instruction/step on its own
+                     line.
+                  </p>
+               </div>
+
+               <div class="sm:col-span-2 my-4">
+                  <label class="block mb-2 text-lg font-semibold text-gray-900">Tips
+                     (Optional)</label>
+                  <textarea id="recipe-tips-input" rows="4"
+                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
+                     placeholder="Customize the soup by adding spinach or mushrooms"></textarea>
+               </div>
+
+               <div class="sm:col-span-2 my-4">
+                  <label class="block text-lg font-semibold text-gray-900">Upload
+                     the photo of the dish</label>
+                  <p class="text-xs mb-2 font-light italic">You don't need to upload a photo of the dish, if you don't
+                     want to change it.
+                  </p>
+                  <div class="flex items-center justify-center w-full">
+                     <label for="dish-image"
+                        class="flex flex-col items-center justify-center w-full h-64 border border-gray-300 rounded-md cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                           <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                              fill="none" viewBox="0 0 20 16">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                 stroke-width="2"
+                                 d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                           </svg>
+                           <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to
+                                 upload</span> or drag and drop</p>
+                           <p class="text-xs text-gray-500">PNG, JPG or GIF (MAX 10MB)</p>
+                        </div>
+                        <input id="dish-image" type="file" class="font-light text-sm border border-gray-300 rounded-md"
+                           accept=".jpg, .jpeg, .png, .gif" required />
+                     </label>
+                  </div>
+
+                  <div class="sm:col-span-2 p-3 my-6 bg-gray-50 border-gray-300 border rounded-md">
+                     <h1 class="text-lg font-bold">Photo Guidelines</h1>
+                     <p class="text-sm font-light">Please follow these guidelines when uploading a photo.
+                        Your
+                        recipe may be rejected if
+                        your photo does not meet the guidelines.</p>
+
+                     <div class="do-section">
+                        <h4 class="text-green-500 font-bold text-lg mt-5">Do's</h4>
+                        <div class="flex flex-row gap-4 mt-4">
+                           <div class="max-w-sm ">
+                              <img
+                                 src="https://images.pexels.com/photos/4062498/pexels-photo-4062498.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                 alt="">
+                           </div>
+                           <div class="max-w-sm ">
+                              <img
+                                 src="https://images.pexels.com/photos/3026019/pexels-photo-3026019.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1   "
+                                 alt="">
+                           </div>
+                        </div>
+                        <ul class="mt-3 text-left text-gray-500">
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                              </svg>
+                              <span>Landscape (horizontal) photos</span>
+                           </li>
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5" />
+                              </svg>
+                              <span>Photos including your dish</span>
+                           </li>
+
+                        </ul>
+                     </div>
+
+                     <div class="donts-section">
+                        <h4 class="text-red-500 font-bold text-lg mt-8">Dont's</h4>
+                        <ul class="mt-3 space-y-1 text-left text-gray-500">
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
+                              <span>No portrait (vertical) photos or otherwise your photo will be
+                                 displayed
+                                 incorrectly</span>
+                           </li>
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
+                              <span>No people or pets in your photo</span>
+                           </li>
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
+                              <span>No personal information (name, age, etc.)</span>
+                           </li>
+                           <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
+                              <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
+                              <span>No content that violates our <span
+                                    class="underline cursor-pointer italic items-center">User
+                                    Agreement <ion-icon name="open-outline" class="ml-1"></ion-icon></span></span>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+
+
+               <div class="mt-1">
+                  <div class="flex items-center">
+                     <label class="text-sm font-normal text-gray-900"><svg class="flex-shrink-0 inline w-4 h-4 me-1"
+                           aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 20 20">
+                           <path
+                              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg> Please make sure you
+                        already change what is needed before update or delete your recipe</label>
+                  </div>
+
+                  <div class="sm:col-span-2 mt-6">
+                     <button type="submit" id="update-recipe-btn"
+                        class="text-white bg-green-700 hover:bg-green-800 hover:underline focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-md text-sm w-40 px-5 py-2.5 text-center">Edit
+                        Recipe
+                     </button>
+                     <button type="submit" id="delete-recipe-btn"
+                        class="mx-2 text-white bg-red-700 hover:bg-red-800 hover:underline focus:ring-4 focus:outline-none focus:ring-red-600 font-medium rounded-md text-sm w-40 px-5 py-2.5 text-center">Delete
+                        Recipe
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   <!-- EDIT RECIPE SECTION ENDED -->
+
+   <br>
+   <br>
+
+   <!-- FOOTER SECTION STARTED -->
+   <footer class="bg-white">
+      <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+         <hr class="my-6 border-gray-200 sm:mx-auto lg:my-8" />
+         <div class="sm:flex sm:items-center sm:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center">© 2024 <a href="#"
+                  class="hover:underline">JadiVegan™</a>. All Rights Reserved.
+            </span>
+         </div>
+      </div>
+   </footer>
+   <!-- FOOTER SECTION ENDED -->
+
+   <!-- IONICONS JAVASCRIPT STARTED -->
+   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+   <!-- IONICONS JAVASCRIPT ENDED -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
+
+</html>

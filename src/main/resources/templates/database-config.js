@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 import { getDatabase, set, get, update, remove, push, ref as databaseRef, child, onValue, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
@@ -183,12 +183,32 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fungsi bawaan Firebase untuk mendapatkan data
         get(recipeRef).then((snapshot) => {
             // Pengkondisian untuk menampilkan resep jika UID yang diinginkan ada di tabel
-            if (snapshot.exist()) {
+            if (snapshot.exists()) {
                 const recipeData = snapshot.val();
 
+                document.getElementById("dish-image").src = recipeData.RecipeImage;
+                document.getElementById("recipe-title").innerText = recipeData.RecipeTitle;
+                document.getElementById("recipe-category").innerText = recipeData.RecipeCategory;
+                document.getElementById("recipe-servings").innerText = recipeData.RecipeServings + " Servings";
+                document.getElementById("recipe-ingredients").innerText = recipeData.RecipeIngredients;
+                document.getElementById("recipe-instructions").innerText = recipeData.RecipeInstructions;
+                document.getElementById("recipe-tips").innerText = recipeData.RecipeTips;
 
+                // Mendapatkan elemen Edit This Recipe di navbar
+                const editRecipeLink = document.querySelector("#edit-recipe");
+
+                // Merubah href dari tag di navbar menjadi URL yang diinginkan
+                if (editRecipeLink) {
+                    editRecipeLink.href = `/src/main/resources/templates/pages/edit-recipe-form/index.html?uid=${uid}`;
+                }
+            } else {
+                console.log("No data available for this recipe");
             }
-        })
+        }).catch((error) => {
+            console.log("Error getting data: " + error);
+        });
+    } else {
+        console.log("No UID available for this recipe");
     }
 });
 
@@ -213,11 +233,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const recipeData = data[uid];
 
             const recipeCard = document.createElement("div");
-            recipeCard.className = `itemBox ${recipeData.RecipeCategory.toLowerCase()} flex justify - center text - center py - 2`;
+            recipeCard.className = `itemBox ${recipeData.RecipeCategory.toLowerCase()} flex justify-center text-center py - 2`;
 
             // Menampilkan elemen HTML
             recipeCard.innerHTML = `
-        < a href = "/src/main/resources/templates/pages/recipe-detail/index.html?uid=${uid}" class= "block w-80" >
+        <a href = "/src/main/resources/templates/pages/recipe-detail/index.html?uid=${uid}" class= "block w-80">
         <div
             class="card-recipe bg-white border border-gray-50 rounded-md hover:scale-105 transition-transform duration-500">
             <img class="custom-image w-full h-56 object-cover rounded-t-md"
@@ -226,7 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="p-4 font-sans">
                 <!-- Menggunakan break-words untuk membungkus teks panjang -->
                 <h1 class="text-lg font-bold text-gray-800 break-words">${recipeData.RecipeTitle}</h1>
-                <p clas="text-black">${uid}</p>
                 <div class="flex flex-col mt-4">
                     <div class="flex justify-center gap-4 mb-4">
                         <span class="text-xs font-medium text-gray-600 items-center gap-1">
@@ -245,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         </div>
-                    </a >
+        </a>
             `;
 
             // Menambahkan elemen HTML ke dalam div parents
@@ -256,4 +275,165 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// TESTING COMMIT
+// PROSES MENAMPILKAN DATA RESEP SAAT INI UNTUK DIGANTI DI HALAMAN EDIT RESEP
+document.addEventListener("DOMContentLoaded", () => {
+    // Membuat fungsi untuk mendapatkan query dari URL
+    function getQueryParam(param) {
+        // Menyimpan URL saat ini ke dalam variabel
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Memberikan value dari function getQueryParam menjadi URL yang sedang dibuka
+        return urlParams.get(param);
+    }
+
+    // Mendapatkan UID dari URL
+    const uid = getQueryParam("uid");
+
+    // Membuat variabel untuk mendapatkan bagian input dari HTML
+    const displayCurrentDishImage = document.querySelector("#display-dish-image");
+    const recipeUIDInput = document.querySelector("#recipe-uid");
+    const recipeTitleInput = document.querySelector("#recipe-title-input");
+    const recipeServingsInput = document.querySelector("#recipe-servings-input");
+    const recipeCategoryInput = document.querySelector("#recipe-category-input");
+    const recipeIngredientsInput = document.querySelector("#recipe-ingredients-input");
+    const recipeInstructionsInput = document.querySelector("#recipe-instructions-input");
+    const recipeTipsInput = document.querySelector("#recipe-tips-input");
+    const viewRecipeButton = document.querySelector("#view-recipe");
+
+    // Variabel untuk mendapatkan bagian input gambar makanan
+    const recipeImageInput = document.querySelector("#dish-image");
+
+    // Membuat variabel untuk mendapatkan tombol update resep dan tombol delete resep
+    const updateRecipeButton = document.querySelector("#update-recipe-btn");
+    const deleteRecipeButton = document.querySelector("#delete-recipe-btn");
+
+    // Pengkondisian untuk menampilkan resep yang sedang dibuka berdasarkan UID nya
+    if (uid) {
+        // Mendapatkan referensi resep berdasarkan UID di dalam tabel Recipes
+        const recipeRef = databaseRef(db, `Recipes/${uid}`);
+
+        // Fungsi bawaan Firebase untuk mendapatkan data
+        get(recipeRef).then((snapshot) => {
+            // Pengkondisian untuk menampilkan resep jika UID yang diinginkan ada di tabel
+            if (snapshot.exists()) {
+                // Mengambil data resep dari database
+                const recipeData = snapshot.val();
+
+                displayCurrentDishImage.src = recipeData.RecipeImage;
+                viewRecipeButton.href = `/src/main/resources/templates/pages/recipe-detail/index.html?uid=${uid}`;
+
+                recipeUIDInput.value = uid;
+                recipeTitleInput.value = recipeData.RecipeTitle;
+                recipeCategoryInput.value = recipeData.RecipeCategory;
+                recipeServingsInput.value = recipeData.RecipeServings;
+                recipeIngredientsInput.value = recipeData.RecipeIngredients;
+                recipeInstructionsInput.value = recipeData.RecipeInstructions;
+                recipeTipsInput.value = recipeData.RecipeTips;
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.log("Error getting data: ", error);
+        });
+    } else {
+        console.log("No UID provided");
+    }
+
+    function updateRecipe() {
+        // Mendapatkan file gambar yang diunggah, jika ada
+        const imageFile = recipeImageInput.files[0];
+
+        // Membuat referensi ke data resep di Firebase
+        const recipeRef = databaseRef(db, `Recipes/${recipeUIDInput.value}`);
+
+        // Fungsi untuk mengupdate data di database
+        function updateRecipeData(imageURL) {
+            update(recipeRef, {
+                RecipeTitle: recipeTitleInput.value,
+                RecipeCategory: recipeCategoryInput.value,
+                RecipeServings: recipeServingsInput.value,
+                RecipeIngredients: recipeIngredientsInput.value,
+                RecipeInstructions: recipeInstructionsInput.value,
+                RecipeTips: recipeTipsInput.value,
+                RecipeImage: imageURL || displayCurrentDishImage.src // Gunakan URL baru atau URL yang sudah ada
+            }).then(() => {
+                alert("Recipe updated successfully!");
+            }).catch((error) => {
+                console.error("Error updating recipe: ", error);
+            });
+        }
+
+        // Jika ada gambar baru, unggah ke Firebase Storage
+        if (imageFile) {
+            const storageImageRef = storageRef(storage, `Images/${imageFile.name}`);
+            uploadBytes(storageImageRef, imageFile).then(() => {
+                return getDownloadURL(storageImageRef);
+            }).then((imageURL) => {
+                updateRecipeData(imageURL);
+            }).catch((error) => {
+                console.error("Error uploading image: ", error);
+            });
+        } else {
+            // Jika tidak ada gambar baru, langsung perbarui data
+            updateRecipeData();
+        }
+    }
+
+    // Menambahkan event listener ke tombol update
+    updateRecipeButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        updateRecipe();
+    });
+
+    // Fungsi untuk menghapus resep
+    function deleteRecipe() {
+        // Ambil referensi ke data resep yang akan dihapus
+        const recipeRef = databaseRef(db, "Recipes/" + recipeUIDInput.value);
+
+        // Ambil data resep terlebih dahulu untuk mendapatkan URL gambar
+        get(recipeRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const recipeData = snapshot.val();
+                const imageURL = recipeData.RecipeImage;
+
+                // Hapus data resep dari database
+                remove(recipeRef).then(() => {
+                    alert("Recipe deleted successfully!");
+
+                    // Jika gambar ada, hapus dari Firebase Storage
+                    if (imageURL) {
+                        // Ekstrak nama file dari URL gambar
+                        const imageName = decodeURIComponent(imageURL.split('/o/')[1].split('?')[0]);
+
+                        // Referensi ke gambar di Firebase Storage
+                        const storageImageRef = storageRef(storage, imageName);
+
+                        // Hapus gambar dari Firebase Storage
+                        deleteObject(storageImageRef).then(() => {
+                            console.log("Image deleted successfully from storage.");
+                        }).catch((error) => {
+                            console.error("Error deleting image from storage: ", error);
+                        });
+                    }
+                }).catch((error) => {
+                    console.error("Error deleting recipe: ", error);
+                    alert("Failed to delete recipe. Please try again.");
+                });
+            } else {
+                console.log("No data available for the given UID.");
+                alert("Recipe not found. Please check the UID.");
+            }
+        }).catch((error) => {
+            console.error("Error retrieving recipe: ", error);
+        });
+    }
+
+    // Tambahkan event listener ke tombol delete
+    deleteRecipeButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const confirmDelete = confirm("Are you sure you want to delete this recipe?");
+        if (confirmDelete) {
+            deleteRecipe();
+        }
+    });
+})
