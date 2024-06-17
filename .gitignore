@@ -12,3 +12,4 @@ target
 .classpath
 .project
 .settings
+.src/main/resources/templates/database-config.js
