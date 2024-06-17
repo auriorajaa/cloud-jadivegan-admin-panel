@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (snapshot.exist()) {
                 const recipeData = snapshot.val();
 
-                
+
             }
         })
     }
@@ -255,3 +255,5 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Error getting data: " + errorObject.code);
     });
 });
+
+// TESTING COMMIT
