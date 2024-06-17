@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+	<title>Login for Admin</title>
+	<script type="module" src="database-config.js"></script>
+	<link rel="icon" href="/src/main/resources/templates/assets/images/logo.png">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
+	<style>
+		.background-image::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: url(https://images.pexels.com/photos/8851929/pexels-photo-8851929.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+			background-repeat: no-repeat;
+			background-size: cover;
+			opacity: 0.5;
+			z-index: -1;
+		}
+
+		.background-image::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.641);
+			/* Semi-transparent black overlay */
+			z-index: -1;
+			/* Overlay on top of the image */
+		}
+	</style>
+</head>
+
+<body>
+	<section class="background-image" style="font-family: 'Poppins', sans-serif;">
+		<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+			<a href="#" class="flex mb-6 text-2xl font-semibold text-white">
+				<img class="w-8 h-8 mr-2" src="/src/main/resources/templates/assets/images/logo.png" alt="logo">
+				JadiVegan
+			</a>
+			<div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+				<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+					<h1 class="text-2xl font-bold leading-tight tracking-tight text-black md:text-2xl">
+						Sign in to your account
+					</h1>
+					<form class="space-y-4 md:space-y-6" action="#">
+						<div>
+							<label for="email" class="block mb-2 text-sm font-medium text-black">Your
+								email</label>
+							<input type="email" name="email" id="admin-login-email"
+								class="bg-gray-50 border border-gray-200 text-black sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+								placeholder="name@company.com" required="">
+						</div>
+						<div>
+							<label for="password" class="block mb-2 text-sm font-medium text-black">Password</label>
+							<input type="password" name="password" id="admin-login-password" placeholder="••••••••"
+								class="bg-gray-50 border border-gray-200 text-black sm:text-sm rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+								required="">
+						</div>
+						<div class="flex items-center justify-between">
+							<a href="#" class="font-light text-green-600 hover:underline">Forgot
+								password?</a>
+						</div>
+						<button type="submit" id="login-account-btn"
+							class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign
+							in</button>
+						<p class="text-sm font-light text-gray-500">
+							Don’t have an account yet? <a href="/src/main/resources/templates/signup.html"
+								class="font-medium text-green-600 hover:underline">Sign up</a>
+						</p>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
+
+</html>

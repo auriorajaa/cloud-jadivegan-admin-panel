@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: mainFont;
+  src: url(assets/font/DancingScript-Regular.ttf);
+}
+
+@font-face {
+  font-family: secondFont;
+  src: url(assets/font/Poppins/Poppins-Regular.ttf);
+}
+
+.top-recipe {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.navbar-list-active {
+  color: #35B14F !important;
+}
