@@ -105,6 +105,27 @@
         </div>
     </section>
 
+    <script>
+        // Fungsi ini mengambil elemen dengan ID 'admin-create-email' dan menambahkan event listener untuk input
+        document.getElementById('admin-create-email').addEventListener('input', function () {
+            // Mengambil nilai email dari input
+            var email = this.value;
+            // Pola regular expression untuk memeriksa validitas email
+            var pattern = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$/;
+            // Memeriksa apakah nilai email sesuai dengan pola regular expression
+            var isValid = pattern.test(email);
+
+            // Jika email tidak valid
+            if (!isValid) {
+                // Menetapkan pesan kesalahan kustom
+                this.setCustomValidity("Please enter a valid email address");
+            } else {
+                // Jika email valid, menghapus pesan kesalahan kustom
+                this.setCustomValidity("");
+            }
+        });
+    </script>
+
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 
