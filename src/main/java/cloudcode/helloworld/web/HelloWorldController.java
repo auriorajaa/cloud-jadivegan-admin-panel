@@ -1,17 +1,13 @@
 package cloudcode.helloworld.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /** Defines a controller to handle HTTP requests */
 @Controller
 public final class HelloWorldController {
-
-  private static String project;
-  private static final Logger logger = LoggerFactory.getLogger(HelloWorldController.class);
 
   /**
    * Create an endpoint for the landing page
@@ -31,4 +27,28 @@ public final class HelloWorldController {
     return "index";
   }
 
+  @RequestMapping("/signup")
+  public String signUp() {
+    return "signup";
+  }
+
+  @RequestMapping("/pages/recipe-detail")
+  public String recipe() {
+    return "pages/recipe-detail/index";
+  }
+
+  @RequestMapping("/pages/explore-page")
+  public String homePage() {
+    return "pages/explore-page/index";
+  }
+
+  @RequestMapping("/pages/create-recipe-form")
+  public String createRecipeForm() {
+    return "pages/create-recipe-form/index";
+  }
+
+  @RequestMapping("/pages/edit-recipe-form")
+  public String editRecipeForm() {
+    return "pages/edit-recipe-form/index";
+  }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -7,8 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <title>Sign Up for Admin</title>
-    <script type="module" src="database-config.js"></script>
-    <link rel="icon" href="/src/main/resources/templates/assets/images/logo.png">
+    <script type="module" th:src="@{/js/database-config.js}"></script>
+    <link rel="icon" th:href="@{/assets/images/logo.png}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -48,7 +48,7 @@
     <section class="background-image" style="font-family: 'Poppins', sans-serif;">
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <a href="#" class="flex mb-6 text-2xl font-semibold text-white">
-                <img class="w-8 h-8 mr-2" src="/src/main/resources/templates/assets/images/logo.png" alt="logo">
+                <img class="w-8 h-8 mr-2" th:src="@{/assets/images/logo.png}" alt="logo">
                 JadiVegan
             </a>
             <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
@@ -95,7 +95,7 @@
                             class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create
                             an account</button>
                         <p class="text-sm font-light text-gray-500">
-                            Already have an account? <a href="/src/main/resources/templates/index.html"
+                            Already have an account? <a th:href="@{/}"
                                 class="font-medium text-green-600 hover:underline">Login
                                 here</a>
                         </p>

@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
             const user = userCredential.user;
             alert("Account successfully logged in");
-            window.location.href = "/src/main/resources/templates/pages/explore-page/index.html";
+            window.location.href = document.getElementById('explore-page-link').href;
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Merubah href dari tag di navbar menjadi URL yang diinginkan
                 if (editRecipeLink) {
-                    editRecipeLink.href = `/src/main/resources/templates/pages/edit-recipe-form/index.html?uid=${uid}`;
+                    editRecipeLink.href = `/pages/edit-recipe-form?uid=${uid}`;
                 }
             } else {
                 console.log("No data available for this recipe");
@@ -237,33 +237,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Menampilkan elemen HTML
             recipeCard.innerHTML = `
-        <a href = "/src/main/resources/templates/pages/recipe-detail/index.html?uid=${uid}" class= "block w-80">
-        <div
-            class="card-recipe bg-white border border-gray-50 rounded-md hover:scale-105 transition-transform duration-500">
-            <img class="custom-image w-full h-56 object-cover rounded-t-md"
-                src="${recipeData.RecipeImage}"
-                alt="${recipeData.RecipeTitle}" />
-            <div class="p-4 font-sans">
-                <!-- Menggunakan break-words untuk membungkus teks panjang -->
-                <h1 class="text-lg font-bold text-gray-800 break-words">${recipeData.RecipeTitle}</h1>
-                <div class="flex flex-col mt-4">
-                    <div class="flex justify-center gap-4 mb-4">
-                        <span class="text-xs font-medium text-gray-600 items-center gap-1">
-                            <i class="fa-solid fa-bowl-food" style="color: #656565;"></i>
-                            ${recipeData.RecipeCategory}
-                        </span>
-                        <span class="text-xs font-medium text-gray-600 items-center gap-1">
-                            <i class="fa-solid fa-utensils" style="color: #656565;"></i>
-                            ${recipeData.RecipeServings} Serv
-                        </span>
+        <a href="/pages/recipe-detail?uid=${uid}" class="block w-80">
+            <div
+                class="card-recipe bg-white border border-gray-50 rounded-md hover:scale-105 transition-transform duration-500">
+                <img class="custom-image w-full h-56 object-cover rounded-t-md"
+                    src="${recipeData.RecipeImage}"
+                    alt="${recipeData.RecipeTitle}" />
+                <div class="p-4 font-sans">
+                    <!-- Menggunakan break-words untuk membungkus teks panjang -->
+                    <h1 class="text-lg font-bold text-gray-800 break-words">${recipeData.RecipeTitle}</h1>
+                    <div class="flex flex-col mt-4">
+                        <div class="flex justify-center gap-4 mb-4">
+                            <span class="text-xs font-medium text-gray-600 items-center gap-1">
+                                <i class="fa-solid fa-bowl-food" style="color: #656565;"></i>
+                                ${recipeData.RecipeCategory}
+                            </span>
+                            <span class="text-xs font-medium text-gray-600 items-center gap-1">
+                                <i class="fa-solid fa-utensils" style="color: #656565;"></i>
+                                ${recipeData.RecipeServings} Serv
+                            </span>
+                        </div>
+                        <button
+                            class="border border-green-600 text-green-600 hover:bg-green-600 hover:underline text-sm font-semibold rounded-lg px-4 py-2 transition-colors duration-300">
+                            Try recipe
+                        </button>
                     </div>
-                    <button
-                        class="border border-green-600 text-green-600 hover:bg-green-600 hover:underline text-sm font-semibold rounded-lg px-4 py-2 transition-colors duration-300">
-                        Try recipe
-                    </button>
                 </div>
             </div>
-        </div>
         </a>
             `;
 
@@ -320,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const recipeData = snapshot.val();
 
                 displayCurrentDishImage.src = recipeData.RecipeImage;
-                viewRecipeButton.href = `/src/main/resources/templates/pages/recipe-detail/index.html?uid=${uid}`;
+                viewRecipeButton.href = `@{/pages/recipe-detail?uid=${uid}}`;
 
                 recipeUIDInput.value = uid;
                 recipeTitleInput.value = recipeData.RecipeTitle;
@@ -358,6 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 RecipeImage: imageURL || displayCurrentDishImage.src // Gunakan URL baru atau URL yang sudah ada
             }).then(() => {
                 alert("Recipe updated successfully!");
+                window.location.reload();
             }).catch((error) => {
                 console.error("Error updating recipe: ", error);
             });
@@ -415,6 +416,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             console.error("Error deleting image from storage: ", error);
                         });
                     }
+
+                    window.location.href = document.getElementById('reload-page-after-delete-or-edit-recipe').href;
                 }).catch((error) => {
                     console.error("Error deleting recipe: ", error);
                     alert("Failed to delete recipe. Please try again.");
