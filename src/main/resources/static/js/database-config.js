@@ -1,7 +1,7 @@
 // Import fungsi yang dibutuhkan dan dipakai
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getStorage, uploadBytes, getDownloadURL, ref as storageRef, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 import { getDatabase, set, get, update, remove, push, ref as databaseRef, child, onValue, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -439,4 +439,88 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteRecipe();
         }
     });
-})
+});
+
+// FUNGSI SEARCH
+document.addEventListener("DOMContentLoaded", () => {
+    const resultBox = document.querySelector("#result-box");
+    const inputBox = document.querySelector("#default-search");
+    const closeButton = document.querySelector("#close-btn");
+
+    let availableKeywords = [];
+
+    // Mengambil data dari Firebase Realtime Database
+    const recipesRef = databaseRef(db, 'Recipes');
+    onValue(recipesRef, (snapshot) => {
+        const data = snapshot.val();
+        availableKeywords = Object.entries(data).map(([uid, item]) => ({
+            uid: uid,
+            title: item.RecipeTitle
+        }));
+    });
+
+    inputBox.onkeyup = function () {
+        let result = [];
+        let input = inputBox.value;
+
+        if (input.length) {
+            result = availableKeywords.filter(({ title }) => {
+                return title.toLowerCase().includes(input.toLowerCase());
+            });
+            console.log(result);
+        }
+
+        display(result);
+    }
+
+    function display(result) {
+        if (result.length) {
+            const content = result.map(({ uid, title }) => {
+                return `
+                    <a href='/pages/recipe-detail?uid=${uid}' class='text-gray-900'>                    
+                        <li id='list-search' class='py-2'>${title}</li>
+                    </a>
+                `;
+            })
+
+            resultBox.innerHTML = "<ul class='space-y-3 p-2'>" + content.join('') + "</ul>";
+            resultBox.style.display = 'block';
+        } else {
+            resultBox.style.display = 'none';
+        }
+    }
+
+    closeButton.addEventListener("click", () => {
+        resultBox.style.display = 'none';
+    });
+
+    document.addEventListener("click", (event) => {
+        const isClickInside = resultBox.contains(event.target) || inputBox.contains(event.target);
+
+        if (!isClickInside) {
+            resultBox.style.display = 'none';
+        }
+    });
+});
+
+// FUNGSI FORGOT PASSWORD
+document.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.getElementById("admin-login-email");
+    const forgotPasswordButton = document.getElementById("sendPasswordResetEmail");
+
+    function forgotPassword() {
+        sendPasswordResetEmail(auth, emailInput.value)
+            .then(() => {
+                alert(`Password reset email sent successfully! to ${emailInput.value}`);
+            })
+            .catch((error) => {
+                alert("Failed to send password reset email. Please input the correct email address.");
+            });
+    }
+
+    forgotPasswordButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        forgotPassword();
+    });
+
+});
