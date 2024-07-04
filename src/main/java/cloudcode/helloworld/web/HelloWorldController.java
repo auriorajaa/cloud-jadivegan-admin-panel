@@ -27,11 +27,6 @@ public final class HelloWorldController {
     return "index";
   }
 
-  @RequestMapping("/signup")
-  public String signUp() {
-    return "signup";
-  }
-
   @RequestMapping("/pages/recipe-detail")
   public String recipe() {
     return "pages/recipe-detail/index";

@@ -29,41 +29,6 @@ const storage = getStorage(app);
 // Menginisialisasi Database
 const db = getDatabase();
 
-// PROSES MEMBUAT AKUN (SIGN UP)
-document.addEventListener("DOMContentLoaded", () => {
-    // Menginisialisasi variabel untuk menarik data dari inputan
-    const adminEmailForSignUp = document.querySelector("#admin-create-email");
-    const adminPasswordForSignUp = document.querySelector("#admin-create-password");
-
-    // Variabel untuk tombol signup
-    const signUpBtn = document.querySelector("#signup-account-btn");
-
-    // Membuat fungsi signup
-    const userSignUp = async () => {
-        // Mengambil nilai dari inputan dan memasukkannya ke variabel baru
-        const signUpEmail = adminEmailForSignUp.value;
-        const signUpPassword = adminPasswordForSignUp.value;
-
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
-            const user = userCredential.user;
-            alert("Account successfully created");
-            window.location.reload();  // Refresh halaman setelah akun berhasil dibuat
-        } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode + errorMessage);
-            alert("Error creating account: " + errorMessage);  // Menampilkan pesan error yang lebih informatif
-        }
-    };
-
-    // Menjalankan fungsi userSignUp ketika tombol create account ditekan
-    signUpBtn.addEventListener("click", (event) => {
-        event.preventDefault(); // Mencegah halaman untuk reload atau action default lainnya
-        userSignUp();
-    });
-});
-
 // PROSES MASUK AKUN (LOGIN)
 document.addEventListener("DOMContentLoaded", () => {
     // Menginisialisasi variabel untuk menarik data dari inputan
@@ -79,16 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const loginEmail = adminEmailForLogin.value;
         const loginPassword = adminPasswordForLogin.value;
 
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-            const user = userCredential.user;
-            alert("Account successfully logged in");
+        if (loginEmail === 'thisadmin@admin.com' && loginPassword === 'thisadmin123') {
+            // Mengarahkan ke halaman explore
+            alert("Account successfully logged in. Redirecting...");
             window.location.href = document.getElementById('explore-page-link').href;
-        } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode + errorMessage);
-            alert("Error logging in: " + errorMessage);
+        } else {
+            alert("Email or password is incorrect. Please try again.");
+            window.location.reload();
+            // Tidak mengarahkan ke halaman explore
         }
     }
 
@@ -203,28 +166,29 @@ document.addEventListener("DOMContentLoaded", () => {
                                 if (userSnapshot.exists()) {
                                     const userData = userSnapshot.val();
                                     const commentItem = document.createElement("li");
-                                    commentItem.className = "comment-item flex gap-4 p-4 bg-white rounded-lg";
+                                    commentItem.className = "comment-item flex flex-col sm:flex-row gap-4 bg-white border-none rounded-lg";
 
                                     const userProfileImage = userData.profileImage || 'https://via.placeholder.com/50';
-
                                     const commentTime = new Date(Number(comment.timestamp)).toLocaleString();
 
                                     commentItem.innerHTML = `
-                                        <img src="${userProfileImage}" alt="${userData.name}" class="w-12 h-12 rounded-full object-cover">
+                                        <img src="${userProfileImage}" alt="${userData.name}" class="w-20 h-20 sm:w-12 sm:h-12 rounded-lg object-cover flex-shrink-0">
                                         <div class="flex-1">
-                                            <div class="flex justify-between items-center">
+                                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                                                 <div class="flex items-center gap-2">
-                                                    <p class="font-semibold">${userData.name}</p>
+                                                    <p class="font-semibold text-lg">${userData.name}</p>
                                                     <p class="text-sm text-gray-500">${userData.email}</p>
                                                 </div>
-                                                <p class="text-sm text-gray-400">${commentTime}</p>
-                                                 <button class="delete-comment-btn text-red-500" data-id="${comment.id}" aria-label="Delete comment">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75V6h12v12.75a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 016 18.75zM4.5 6h15M10.5 6V4.5h3V6m-9 0V6A2.25 2.25 0 006 3.75h12A2.25 2.25 0 0020.25 6v0" />
-                                                </svg>
-                                            </button>
+                                                <div class="mt-2 sm:mt-0 flex items-center">
+                                                    <p class="text-sm text-gray-400 mr-4">${commentTime}</p>
+                                                    <button class="delete-comment-btn ml-4 text-red-500" data-id="${comment.id}" aria-label="Delete comment">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75V6h12v12.75a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 016 18.75zM4.5 6h15M10.5 6V4.5h3V6m-9 0V6A2.25 2.25 0 006 3.75h12A2.25 2.25 0 0020.25 6v0" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <p class="mt-2">${comment.comment}</p>
+                                            <p class="mt-2 text-gray-800">${comment.comment}</p>
                                         </div>
                                     `;
 
