@@ -160,29 +160,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// PROSES MENAMPILKAN RESEP DI HALAMAN RESEP DETAIL
 document.addEventListener("DOMContentLoaded", () => {
-
-    // Membuat fungsi untuk mendapatkan query dari URL
     function getQueryParam(param) {
-        // Menyimpan URL saat ini ke dalam variabel
         const urlParams = new URLSearchParams(window.location.search);
-
-        // Memberikan value dari function getQueryParam menjadi URL yang sedang dibuka
         return urlParams.get(param);
     }
 
-    // Menapatkan referensi UID Resep yang sedang dibuka dari URL
     const uid = getQueryParam("uid");
 
-    // Pengkondisian untuk menampilkan resep yang sedang dibuka berdasarkan UID nya
     if (uid) {
-        // Mendapatkan referensi resep berdasarkan UID di dalam tabel Recipes
         const recipeRef = databaseRef(db, `Recipes/${uid}`);
+        const commentsRef = databaseRef(db, `Recipes/${uid}/Comments`);
 
-        // Fungsi bawaan Firebase untuk mendapatkan data
         get(recipeRef).then((snapshot) => {
-            // Pengkondisian untuk menampilkan resep jika UID yang diinginkan ada di tabel
             if (snapshot.exists()) {
                 const recipeData = snapshot.val();
 
@@ -194,13 +184,73 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("recipe-instructions").innerText = recipeData.RecipeInstructions;
                 document.getElementById("recipe-tips").innerText = recipeData.RecipeTips;
 
-                // Mendapatkan elemen Edit This Recipe di navbar
                 const editRecipeLink = document.querySelector("#edit-recipe");
-
-                // Merubah href dari tag di navbar menjadi URL yang diinginkan
                 if (editRecipeLink) {
                     editRecipeLink.href = `/pages/edit-recipe-form?uid=${uid}`;
                 }
+
+                get(commentsRef).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const commentsData = snapshot.val();
+                        const commentsList = document.getElementById("comments-list");
+                        commentsList.innerHTML = "";
+
+                        for (const timestamp in commentsData) {
+                            const comment = commentsData[timestamp];
+                            const userRef = databaseRef(db, `Users/${comment.uid}`);
+
+                            get(userRef).then((userSnapshot) => {
+                                if (userSnapshot.exists()) {
+                                    const userData = userSnapshot.val();
+                                    const commentItem = document.createElement("li");
+                                    commentItem.className = "comment-item flex gap-4 p-4 bg-white rounded-lg";
+
+                                    const userProfileImage = userData.profileImage || 'https://via.placeholder.com/50';
+
+                                    const commentTime = new Date(Number(comment.timestamp)).toLocaleString();
+
+                                    commentItem.innerHTML = `
+                                        <img src="${userProfileImage}" alt="${userData.name}" class="w-12 h-12 rounded-full object-cover">
+                                        <div class="flex-1">
+                                            <div class="flex justify-between items-center">
+                                                <div class="flex items-center gap-2">
+                                                    <p class="font-semibold">${userData.name}</p>
+                                                    <p class="text-sm text-gray-500">${userData.email}</p>
+                                                </div>
+                                                <p class="text-sm text-gray-400">${commentTime}</p>
+                                                 <button class="delete-comment-btn text-red-500" data-id="${comment.id}" aria-label="Delete comment">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18.75V6h12v12.75a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 016 18.75zM4.5 6h15M10.5 6V4.5h3V6m-9 0V6A2.25 2.25 0 006 3.75h12A2.25 2.25 0 0020.25 6v0" />
+                                                </svg>
+                                            </button>
+                                            </div>
+                                            <p class="mt-2">${comment.comment}</p>
+                                        </div>
+                                    `;
+
+                                    commentsList.appendChild(commentItem);
+
+                                    const deleteButton = commentItem.querySelector(".delete-comment-btn");
+                                    deleteButton.addEventListener("click", () => {
+                                        const confirmDelete = confirm("Are you sure you want to delete this comment?");
+                                        if (confirmDelete) {
+                                            deleteComment(uid, comment.id);
+                                        }
+                                    });
+                                } else {
+                                    console.log("No user data available for UID:", comment.uid);
+                                }
+                            }).catch((error) => {
+                                console.log("Error getting user data: " + error);
+                            });
+                        }
+                    } else {
+                        console.log("No comments available for this recipe");
+                    }
+                }).catch((error) => {
+                    console.log("Error getting comments: " + error);
+                });
+
             } else {
                 console.log("No data available for this recipe");
             }
@@ -210,7 +260,21 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.log("No UID available for this recipe");
     }
+
+    function deleteComment(recipeUid, commentId) {
+        const commentRef = databaseRef(db, `Recipes/${recipeUid}/Comments/${commentId}`);
+
+        remove(commentRef).then(() => {
+            alert("Comment deleted successfully!");
+            location.reload(); // Refresh halaman setelah komentar dihapus
+        }).catch((error) => {
+            console.error("Error deleting comment: ", error);
+            alert("Failed to delete comment. Please try again.");
+        });
+    }
 });
+
+
 
 // PROSES MENAMPILKAN RESEP DI HALAMAN SEARCH
 document.addEventListener("DOMContentLoaded", () => {
@@ -228,47 +292,49 @@ document.addEventListener("DOMContentLoaded", () => {
         // Menghapus konten yang ada (untuk mencegah duplikasi)
         displayRecipeContainer.innerHTML = "";
 
-        // Melakukan iterasi setiap entri di dalam data 
-        for (const uid in data) {
-            const recipeData = data[uid];
+        if (data) {
+            // Konversi data objek menjadi array dan urutkan berdasarkan CreatedAt
+            const recipesArray = Object.entries(data)
+                .map(([uid, recipeData]) => ({ uid, ...recipeData }))
+                .sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
 
-            const recipeCard = document.createElement("div");
-            recipeCard.className = `itemBox ${recipeData.RecipeCategory.toLowerCase()} flex justify-center text-center py - 2`;
+            // Melakukan iterasi setiap entri di dalam array yang diurutkan
+            recipesArray.forEach((recipeData) => {
+                const recipeCard = document.createElement("div");
+                recipeCard.className = `itemBox ${recipeData.RecipeCategory.toLowerCase()} flex justify-center text-center py-2`;
 
-            // Menampilkan elemen HTML
-            recipeCard.innerHTML = `
-        <a href="/pages/recipe-detail?uid=${uid}" class="block w-80">
-            <div
-                class="card-recipe bg-white border border-gray-50 rounded-md hover:scale-105 transition-transform duration-500">
-                <img class="custom-image w-full h-56 object-cover rounded-t-md"
-                    src="${recipeData.RecipeImage}"
-                    alt="${recipeData.RecipeTitle}" />
-                <div class="p-4 font-sans">
-                    <!-- Menggunakan break-words untuk membungkus teks panjang -->
-                    <h1 class="text-lg font-bold text-gray-800 break-words">${recipeData.RecipeTitle}</h1>
-                    <div class="flex flex-col mt-4">
-                        <div class="flex justify-center gap-4 mb-4">
-                            <span class="text-xs font-medium text-gray-600 items-center gap-1">
-                                <i class="fa-solid fa-bowl-food" style="color: #656565;"></i>
-                                ${recipeData.RecipeCategory}
-                            </span>
-                            <span class="text-xs font-medium text-gray-600 items-center gap-1">
-                                <i class="fa-solid fa-utensils" style="color: #656565;"></i>
-                                ${recipeData.RecipeServings} Serv
-                            </span>
+                // Menampilkan elemen HTML
+                recipeCard.innerHTML = `
+                    <a href="/pages/recipe-detail?uid=${recipeData.uid}" class="block w-80">
+                        <div class="card-recipe bg-white border border-gray-50 rounded-md hover:scale-105 transition-transform duration-500">
+                            <img class="custom-image w-full h-56 object-cover rounded-t-md" src="${recipeData.RecipeImage}" alt="${recipeData.RecipeTitle}" />
+                            <div class="p-4 font-sans">
+                                <h1 class="text-lg font-bold text-gray-800 break-words">${recipeData.RecipeTitle}</h1>
+                                <div class="flex flex-col mt-4">
+                                    <div class="flex justify-center gap-4 mb-4">
+                                        <span class="text-xs font-medium text-gray-600 items-center gap-1">
+                                            <i class="fa-solid fa-bowl-food" style="color: #656565;"></i>
+                                            ${recipeData.RecipeCategory}
+                                        </span>
+                                        <span class="text-xs font-medium text-gray-600 items-center gap-1">
+                                            <i class="fa-solid fa-utensils" style="color: #656565;"></i>
+                                            ${recipeData.RecipeServings} Serv
+                                        </span>
+                                    </div>
+                                    <button class="border border-green-600 text-green-600 hover:bg-green-600 hover:underline text-sm font-semibold rounded-lg px-4 py-2 transition-colors duration-300">
+                                        Try recipe
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button
-                            class="border border-green-600 text-green-600 hover:bg-green-600 hover:underline text-sm font-semibold rounded-lg px-4 py-2 transition-colors duration-300">
-                            Try recipe
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </a>
-            `;
+                    </a>
+                `;
 
-            // Menambahkan elemen HTML ke dalam div parents
-            displayRecipeContainer.appendChild(recipeCard);
+                // Menambahkan elemen HTML ke dalam div parents
+                displayRecipeContainer.appendChild(recipeCard);
+            });
+        } else {
+            console.log("No recipes available");
         }
     }, (errorObject) => {
         console.log("Error getting data: " + errorObject.code);
@@ -340,6 +406,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateRecipe() {
+        // Validasi untuk memastikan semua input yang diperlukan terisi
+        if (!recipeTitleInput.value || !recipeServingsInput.value || !recipeCategoryInput.value || !recipeIngredientsInput.value || !recipeInstructionsInput.value || !recipeTipsInput.value) {
+            alert("Please fill out all required fields.");
+            return; // Berhenti jika ada input yang kosong
+        }
+
         // Mendapatkan file gambar yang diunggah, jika ada
         const imageFile = recipeImageInput.files[0];
 

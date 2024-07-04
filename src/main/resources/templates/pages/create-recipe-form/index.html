@@ -56,7 +56,7 @@
     <!-- NAVBAR SECTION ENDED -->
 
     <!-- SUBMIT RECIPE SECTION STARTED -->
-    <div class="flex flex-col max-w-screen-xl p-3 mx-auto">
+    <div class="flex flex-col max-w-screen-xl p-3 mx-auto items-center">
         <div class="max-w-full p-2 flex">
             <div class="max-w-2xl py-3 ">
                 <h1 class="my-2 font-extrabold text-5xl" style="font-family: 'Dancing Script', cursive;">Submit Your
@@ -138,8 +138,8 @@ Add minced garlic and cook for another minute until fragrant."></textarea>
 
                     <div class="sm:col-span-2 my-4">
                         <label class="block mb-2 text-lg font-semibold text-gray-900">Tips
-                            (Optional)</label>
-                        <textarea id="recipe-tips" rows="4"
+                            <span class="text-red-600">*</span></label>
+                        <textarea id="recipe-tips" rows="4" required=""
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                             placeholder="Customize the soup by adding spinach or mushrooms"></textarea>
                     </div>
@@ -237,15 +237,6 @@ Add minced garlic and cook for another minute until fragrant."></textarea>
 
 
                     <div class="mt-1">
-                        <div class="flex items-center">
-                            <input id="link-checkbox" type="checkbox" value="" required
-                                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2">
-                            <label for="link-checkbox" class="ms-2 text-sm font-normal text-gray-900">I
-                                agree with the <a href="#" class="text-green-600  hover:underline">terms
-                                    and conditions</a>.</label>
-                        </div>
-
-
                         <div class="sm:col-span-2 mt-6">
                             <button type="submit" id="create-recipe-btn"
                                 class="text-white bg-green-700 hover:bg-green-800 hover:underline focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-md text-sm w-40 px-5 py-2.5 text-center">Submit

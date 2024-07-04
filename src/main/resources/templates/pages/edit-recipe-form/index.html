@@ -56,7 +56,7 @@
    <!-- NAVBAR SECTION ENDED -->
 
    <!-- EDIT RECIPE SECTION STARTED -->
-   <div class="flex flex-col max-w-screen-xl p-3 mx-auto">
+   <div class="flex flex-col max-w-screen-xl p-3 mx-auto items-center">
       <div class="max-w-full p-2 flex">
          <div class="max-w-2xl py-3 ">
             <h1 class="my-2 font-extrabold text-5xl" style="font-family: 'Dancing Script', cursive;">Edit Your
@@ -142,8 +142,8 @@ Add minced garlic and cook for another minute until fragrant."></textarea>
 
                <div class="sm:col-span-2 my-4">
                   <label class="block mb-2 text-lg font-semibold text-gray-900">Tips
-                     (Optional)</label>
-                  <textarea id="recipe-tips-input" rows="4"
+                     <span class="text-red-600">*</span></label>
+                  <textarea id="recipe-tips-input" rows="4" required=""
                      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-green-500 focus:border-green-500"
                      placeholder="Customize the soup by adding spinach or mushrooms"></textarea>
                </div>
@@ -220,9 +220,7 @@ Add minced garlic and cook for another minute until fragrant."></textarea>
                         <ul class="mt-3 space-y-1 text-left text-gray-500">
                            <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
                               <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
-                              <span>No portrait (vertical) photos or otherwise your photo will be
-                                 displayed
-                                 incorrectly</span>
+                              <span>No portrait (vertical) photos</span>
                            </li>
                            <li class="flex items-center text-sm space-x-3 rtl:space-x-reverse">
                               <ion-icon name="alert-circle" class="text-red-500 text-lg"></ion-icon>
@@ -255,7 +253,7 @@ Add minced garlic and cook for another minute until fragrant."></textarea>
                         already change what is needed before update or delete your recipe</label>
                   </div>
 
-                  <div class="sm:col-span-2 mt-6">
+                  <div class="mt-6">
                      <button type="submit" id="update-recipe-btn"
                         class="text-white bg-green-700 hover:bg-green-800 hover:underline focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-md text-sm w-40 px-5 py-2.5 text-center">Edit
                         Recipe
